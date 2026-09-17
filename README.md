@@ -2,6 +2,8 @@
 
 Search the web from any Filament field.
 
+![websearch](https://raw.githubusercontent.com/blemli/websearch-for-filament/main/art/banner.png)
+
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/blemli/websearch-for-filament.svg?style=flat-square)](https://packagist.org/packages/blemli/websearch-for-filament) [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/blemli/websearch-for-filament/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/blemli/websearch-for-filament/actions?query=workflow%3Atests+branch%3Amain) [![Total Downloads](https://img.shields.io/packagist/dt/blemli/websearch-for-filament.svg?style=flat-square)](https://packagist.org/packages/blemli/websearch-for-filament)
 
 A hint action that opens a search for the field's value on Google, DuckDuckGo, Bing, Brave, Swisscows, Ecosia, Startpage, Qwant, Yandex or Baidu, with harmonised filters (images, videos, news, shopping, license, transparency, size, layout, timespan, country). Users can pick their own engine. No migration needed.
