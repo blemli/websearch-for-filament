@@ -1,0 +1,27 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('websearch_preferences', function (Blueprint $table): void {
+            $table->id();
+            $table->morphs('user');
+            $table->string('engine')->nullable();
+            $table->string('open_in')->nullable();
+            $table->string('country', 2)->nullable();
+            $table->timestamps();
+
+            $table->unique(['user_type', 'user_id']);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('websearch_preferences');
+    }
+};

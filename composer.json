@@ -1,0 +1,87 @@
+{
+    "name": "blemli/websearch-for-filament",
+    "description": "Search the web from any Filament field",
+    "keywords": [
+        "blemli",
+        "laravel",
+        "filamentphp",
+        "filament",
+        "filament-plugin",
+        "websearch",
+        "search",
+        "google",
+        "duckduckgo",
+        "bing",
+        "websearch-for-filament"
+    ],
+    "homepage": "https://github.com/blemli/websearch-for-filament",
+    "support": {
+        "issues": "https://github.com/blemli/websearch-for-filament/issues",
+        "source": "https://github.com/blemli/websearch-for-filament"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "blemli",
+            "email": "apps@problem.li",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "filament/filament": "^4.0|^5.0",
+        "spatie/laravel-package-tools": "^1.15.0"
+    },
+    "require-dev": {
+        "jeffgreco13/filament-breezy": "^3.0",
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^8.0",
+        "orchestra/testbench": "^9.0|^10.0|^11.0",
+        "pestphp/pest": "^3.7|^4.0",
+        "pestphp/pest-plugin-arch": "^3.0|^4.0",
+        "pestphp/pest-plugin-laravel": "^3.0|^4.0",
+        "pestphp/pest-plugin-livewire": "^3.0|^4.0",
+        "rector/rector": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Blemli\\WebSearch\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Blemli\\WebSearch\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
+        "analyse": "phpstan analyse",
+        "lint": "pint",
+        "refactor": "rector",
+        "test": "pest",
+        "test:lint": "pint --test",
+        "test:refactor": "rector --dry-run"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Blemli\\WebSearch\\WebSearchServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "suggest": {
+        "jeffgreco13/filament-breezy": "Lets users pick their search engine on the My Profile page",
+        "spatie/laravel-activitylog": "Logs every opened search when tracking is on"
+    }
+}
