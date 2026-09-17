@@ -29,7 +29,7 @@ WebSearchAction::make()->query('name')->engine(DuckDuckGo::class)->news()->withi
 Google::images('Fujifilm GFX')->transparent()->layout(Layout::Tall)->url(); // just the URL, no Filament needed
 ```
 
-Results open in a new tab by default; `->openInSameTab()`, `->openInPopup()` and `->openInSlideOver()` (Swisscows, Bing, Baidu) are available on the action and in the user's profile when [Filament Breezy](https://github.com/jeffgreco13/filament-breezy) is installed. `->trackSearches()` on the plugin fires a `SearchOpened` event and logs to [spatie/laravel-activitylog](https://github.com/spatie/laravel-activitylog) when present. Ships in English and German.
+Results open in a new tab by default; `->openInSameTab()`, `->openInPopup()` and `->openInSlideOver()` (Swisscows, Bing, Baidu) are available on the action and in the user's profile (restrict them with `->exceptOpenModes([OpenIn::Popup])`) when [Filament Breezy](https://github.com/jeffgreco13/filament-breezy) is installed. `->trackSearches()` on the plugin fires a `SearchOpened` event and logs to [spatie/laravel-activitylog](https://github.com/spatie/laravel-activitylog) when present. Ships in English and German.
 
 ## License
 

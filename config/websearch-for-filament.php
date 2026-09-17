@@ -42,6 +42,11 @@ return [
     'open_in' => 'new_tab',
 
     /*
+     * Open modes users may choose from when user choice is on.
+     */
+    'open_modes' => ['new_tab', 'same_tab', 'popup', 'slide_over'],
+
+    /*
      * Let users pick their engine (and how results open) in their profile.
      */
     'user_choice' => false,

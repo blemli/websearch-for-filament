@@ -10,6 +10,7 @@ All notable changes to `websearch-for-filament` will be documented in this file.
 - Harmonised filters: search type, license, color/transparency, size, layout, video duration, timespan/date range, country
 - Open in new tab, same tab, popup or slide-over (engines that allow framing)
 - User choice of engine with cookie (default), user-attribute or database store; Filament Breezy profile section
+- Devs restrict the open modes users may pick (`->openModes()` / `->exceptOpenModes()`)
 - `SearchOpened` event with signed tracking redirect and optional activitylog listener
 - Gate permission for Filament Shield
 - Install and uninstall commands, English and German translations

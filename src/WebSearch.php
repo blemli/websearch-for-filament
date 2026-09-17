@@ -93,14 +93,42 @@ class WebSearch
         return $this->defaultEngine();
     }
 
+    /**
+     * The user's mode when it is still allowed, else the dev's default,
+     * else the first allowed mode.
+     */
     public function openInFor(?Authenticatable $user = null): OpenIn
     {
+        $allowed = $this->openModes();
         $preferred = $this->preferencesFor($user)['open_in'] ?? null;
+        $preferred = $preferred ? OpenIn::tryFrom($preferred) : null;
 
-        return ($preferred ? OpenIn::tryFrom($preferred) : null)
-            ?? $this->plugin()?->getOpenIn()
+        if ($preferred !== null && in_array($preferred, $allowed, true)) {
+            return $preferred;
+        }
+
+        $default = $this->plugin()?->getOpenIn()
             ?? OpenIn::tryFrom((string) config('websearch-for-filament.open_in', 'new_tab'))
             ?? OpenIn::NewTab;
+
+        return in_array($default, $allowed, true) ? $default : ($allowed[0] ?? $default);
+    }
+
+    /**
+     * Open modes users may choose from.
+     *
+     * @return list<OpenIn>
+     */
+    public function openModes(): array
+    {
+        $modes = $this->plugin()?->getOpenModes()
+            ?? array_map(fn (string $mode): ?OpenIn => OpenIn::tryFrom($mode), (array) config('websearch-for-filament.open_modes', ['new_tab', 'same_tab', 'popup', 'slide_over']));
+        $except = $this->plugin()?->getExceptOpenModes() ?? [];
+
+        return array_values(array_filter(
+            $modes,
+            fn (?OpenIn $mode): bool => $mode instanceof OpenIn && ! in_array($mode, $except, true),
+        ));
     }
 
     public function countryFor(?Authenticatable $user = null): ?Country

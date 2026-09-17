@@ -85,7 +85,7 @@ it('saves the form through the livewire component', function () {
     loginUser();
 
     livewire(SearchPreferences::class)
-        ->assertFormSet(['engine' => 'google', 'open_in' => OpenIn::NewTab])
+        ->assertFormSet(['engine' => 'google', 'open_in' => 'new_tab'])
         ->fillForm(['engine' => 'duckduckgo', 'open_in' => 'slide_over', 'country' => 'ch'])
         ->call('submit')
         ->assertHasNoFormErrors()
@@ -108,4 +108,31 @@ it('saves through the breezy profile component, whose name livewire can resolve'
     // call('submit') above already had Livewire resolve the component by its
     // name — that is what breaks when the name does not match the alias.
     expect(json_decode(Cookie::queued(CookieStore::NAME)->getValue(), true))->toBe(['engine' => 'swisscows', 'open_in' => 'slide_over']);
+});
+
+it('lets devs disallow open modes and falls back when a stored mode is gone', function () {
+    bootPanel()->plugin(WebSearchPlugin::make()->exceptOpenModes([OpenIn::Popup, OpenIn::SlideOver]));
+    request()->cookies->set(CookieStore::NAME, json_encode(['open_in' => 'slide_over']));
+
+    expect(app(WebSearch::class)->openModes())->toBe([OpenIn::NewTab, OpenIn::SameTab])
+        ->and(app(WebSearch::class)->openInFor())->toBe(OpenIn::NewTab);
+
+    config()->set('websearch-for-filament.open_in', 'popup');
+
+    expect(app(WebSearch::class)->openInFor())->toBe(OpenIn::NewTab);
+});
+
+it('only offers allowed open modes in the form and hides the choice when one remains', function () {
+    bootPanel()->plugin(WebSearchPlugin::make()->openModes([OpenIn::NewTab, OpenIn::Popup]));
+    loginUser();
+
+    $field = livewire(SearchPreferences::class)->instance()->getSchema('form')->getFlatFields()['open_in'];
+
+    expect(array_keys($field->getOptions()))->toBe(['new_tab', 'popup'])
+        ->and($field->isVisible())->toBeTrue();
+
+    config()->set('websearch-for-filament.open_modes', ['new_tab']);
+    bootPanel()->plugin(WebSearchPlugin::make());
+
+    expect(livewire(SearchPreferences::class)->instance()->getSchema('form')->getFlatFields(withHidden: true)['open_in']->isVisible())->toBeFalse();
 });

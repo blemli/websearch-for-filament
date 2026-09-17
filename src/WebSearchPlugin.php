@@ -36,6 +36,16 @@ class WebSearchPlugin implements Plugin
 
     protected OpenIn | Closure | null $openIn = null;
 
+    /**
+     * @var list<OpenIn> | Closure | null
+     */
+    protected array | Closure | null $openModes = null;
+
+    /**
+     * @var list<OpenIn> | Closure | null
+     */
+    protected array | Closure | null $exceptOpenModes = null;
+
     protected bool | Closure | null $userChoice = null;
 
     protected bool | Closure | null $track = null;
@@ -151,6 +161,46 @@ class WebSearchPlugin implements Plugin
     public function getOpenIn(): ?OpenIn
     {
         return $this->evaluate($this->openIn);
+    }
+
+    /**
+     * The open modes users may choose from (allow list).
+     *
+     * @param  list<OpenIn> | Closure  $modes
+     */
+    public function openModes(array | Closure $modes): static
+    {
+        $this->openModes = $modes;
+
+        return $this;
+    }
+
+    /**
+     * @return list<OpenIn> | null
+     */
+    public function getOpenModes(): ?array
+    {
+        return $this->evaluate($this->openModes);
+    }
+
+    /**
+     * Open modes users may not choose (deny list).
+     *
+     * @param  list<OpenIn> | Closure  $modes
+     */
+    public function exceptOpenModes(array | Closure $modes): static
+    {
+        $this->exceptOpenModes = $modes;
+
+        return $this;
+    }
+
+    /**
+     * @return list<OpenIn>
+     */
+    public function getExceptOpenModes(): array
+    {
+        return $this->evaluate($this->exceptOpenModes) ?? [];
     }
 
     /**

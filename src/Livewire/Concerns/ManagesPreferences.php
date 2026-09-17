@@ -37,6 +37,7 @@ trait ManagesPreferences
     public function form(Schema $schema): Schema
     {
         $engines = app(WebSearch::class)->engines();
+        $openModes = app(WebSearch::class)->openModes();
 
         return $schema
             ->components([
@@ -48,9 +49,10 @@ trait ManagesPreferences
                     ->required(),
                 ToggleButtons::make('open_in')
                     ->label(__('websearch-for-filament::websearch.preferences.open_in'))
-                    ->options(OpenIn::class)
+                    ->options(collect($openModes)->mapWithKeys(fn (OpenIn $mode): array => [$mode->value => $mode->getLabel()])->all())
                     ->inline()
-                    ->required(),
+                    ->required()
+                    ->visible(count($openModes) > 1),
                 Select::make('country')
                     ->label(__('websearch-for-filament::websearch.preferences.country'))
                     ->helperText(__('websearch-for-filament::websearch.preferences.country_help'))
