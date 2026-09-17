@@ -2,6 +2,12 @@
 
 All notable changes to `websearch-for-filament` will be documented in this file.
 
+## v0.1.1 - 2026-09-17
+
+- Uninstaller: `--drop-tables` and `--remove-composer` flags, safe defaults under `--no-interaction`
+- README: `filament-hidden` banner and slogan for the plugin directory
+- Light-theme banner
+
 ## v0.1.0 - 2026-09-17
 
 - `->websearch()` and `->imagesearch()` macros on form fields and infolist entries
