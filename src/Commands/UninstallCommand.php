@@ -11,7 +11,10 @@ use function Laravel\Prompts\confirm;
 
 class UninstallCommand extends Command
 {
-    public $signature = 'websearch:uninstall {--force : Skip all confirmation prompts}';
+    public $signature = 'websearch:uninstall
+        {--force : Answer every prompt with yes, except the composer step (never runs under --force)}
+        {--drop-tables : Drop the websearch_preferences table (default: no)}
+        {--remove-composer : Run "composer remove blemli/websearch-for-filament" afterwards (default: no)}';
 
     public $description = 'Uninstall websearch-for-filament: drop its table and remove published files';
 
@@ -22,7 +25,7 @@ class UninstallCommand extends Command
 
         $registrations = $this->findPluginRegistrations();
 
-        if ($this->option('force')) {
+        if ($this->option('force') || ! $this->input->isInteractive()) {
             $this->warnAboutRegistrations($registrations);
         } else {
             while ($registrations !== []) {
@@ -40,7 +43,10 @@ class UninstallCommand extends Command
             }
         }
 
-        if (! $this->option('force') && confirm('Run "composer remove blemli/websearch-for-filament" now?', default: $registrations === [])) {
+        $removeComposer = $this->option('remove-composer')
+            || (! $this->option('force') && $this->confirmOrDefault('Run "composer remove blemli/websearch-for-filament" now?', $registrations === [], interactiveOnly: true));
+
+        if ($removeComposer) {
             Process::path(base_path())
                 ->forever()
                 ->run(['composer', 'remove', 'blemli/websearch-for-filament'], fn (string $type, string $output) => $this->output->write($output));
@@ -61,7 +67,7 @@ class UninstallCommand extends Command
 
         $this->info('The websearch_preferences table (user search preferences) will be dropped.');
 
-        if ($this->option('force') || confirm('Drop the websearch_preferences table?')) {
+        if ($this->option('drop-tables') || $this->option('force') || $this->confirmOrDefault('Drop the websearch_preferences table?', false)) {
             Schema::drop('websearch_preferences');
             $this->info('Dropped websearch_preferences.');
         }
@@ -88,13 +94,26 @@ class UninstallCommand extends Command
             $this->line("  - {$path}");
         }
 
-        if (! $this->option('force') && ! confirm('Delete published config, translations, views and migrations?')) {
+        if (! $this->option('force') && ! $this->confirmOrDefault('Delete published config, translations, views and migrations?', true)) {
             return;
         }
 
         foreach ($paths as $path) {
             File::isDirectory($path) ? File::deleteDirectory($path) : File::delete($path);
         }
+    }
+
+    /**
+     * Non-interactive runs (-n, CI, deploy scripts) get the default without
+     * a prompt; the composer step additionally never runs unasked.
+     */
+    protected function confirmOrDefault(string $question, bool $default, bool $interactiveOnly = false): bool
+    {
+        if (! $this->input->isInteractive()) {
+            return $interactiveOnly ? false : $default;
+        }
+
+        return confirm($question, default: $default);
     }
 
     /**

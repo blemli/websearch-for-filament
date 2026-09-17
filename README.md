@@ -1,8 +1,8 @@
 # websearch
 
-Search the web from any Filament field.
+<p class="filament-hidden">Search the web from any Filament field.</p>
 
-![websearch](https://raw.githubusercontent.com/blemli/websearch-for-filament/main/art/banner.png)
+<img class="filament-hidden" src="https://raw.githubusercontent.com/blemli/websearch-for-filament/main/art/banner.jpg" alt="websearch" />
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/blemli/websearch-for-filament.svg?style=flat-square)](https://packagist.org/packages/blemli/websearch-for-filament) [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/blemli/websearch-for-filament/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/blemli/websearch-for-filament/actions?query=workflow%3Atests+branch%3Amain) [![Total Downloads](https://img.shields.io/packagist/dt/blemli/websearch-for-filament.svg?style=flat-square)](https://packagist.org/packages/blemli/websearch-for-filament)
 
@@ -12,7 +12,7 @@ A hint action that opens a search for the field's value on Google, DuckDuckGo, B
 
 ```bash
 composer require blemli/websearch-for-filament
-php artisan websearch-for-filament:install
+php artisan websearch-for-filament:install -n
 ```
 
 Register the plugin in your panel provider: `->plugin(WebSearchPlugin::make()->userChoice())`

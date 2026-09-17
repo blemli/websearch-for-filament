@@ -116,3 +116,29 @@ it('prints english output regardless of the app locale', function () {
         ->expectsOutputToContain('websearch-for-filament was uninstalled. Finish with: composer remove blemli/websearch-for-filament')
         ->assertSuccessful();
 });
+
+it('runs non-interactively with safe defaults', function () {
+    publishFakeArtifacts();
+    createPreferencesTable();
+
+    $this->artisan('websearch:uninstall', ['--no-interaction' => true])
+        ->expectsOutputToContain('Finish with: composer remove blemli/websearch-for-filament')
+        ->assertSuccessful();
+
+    expect(File::exists(config_path('websearch-for-filament.php')))->toBeFalse()
+        ->and(Schema::hasTable('websearch_preferences'))->toBeTrue();
+});
+
+it('drops the table non-interactively when told to', function () {
+    createPreferencesTable();
+
+    $this->artisan('websearch:uninstall', ['--no-interaction' => true, '--drop-tables' => true])->assertSuccessful();
+
+    expect(Schema::hasTable('websearch_preferences'))->toBeFalse();
+});
+
+it('installs non-interactively and publishes the config', function () {
+    $this->artisan('websearch-for-filament:install', ['--no-interaction' => true])->assertSuccessful();
+
+    expect(File::exists(config_path('websearch-for-filament.php')))->toBeTrue();
+});
