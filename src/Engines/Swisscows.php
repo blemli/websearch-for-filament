@@ -5,6 +5,8 @@ namespace Blemli\WebSearch\Engines;
 use Blemli\WebSearch\Engines\Concerns\FiltersByCountry;
 use Blemli\WebSearch\Engines\Concerns\FiltersByTimespan;
 use Blemli\WebSearch\Engines\Concerns\SearchesImages;
+use Blemli\WebSearch\Engines\Concerns\SearchesNews;
+use Blemli\WebSearch\Engines\Concerns\SearchesShopping;
 use Blemli\WebSearch\Engines\Concerns\SearchesVideos;
 use Blemli\WebSearch\Engines\Concerns\SearchesWeb;
 use Blemli\WebSearch\Engines\Contracts\HasCountry;
@@ -17,6 +19,8 @@ class Swisscows extends Engine implements HasCountry, HasTimespan
     use FiltersByCountry;
     use FiltersByTimespan;
     use SearchesImages;
+    use SearchesNews;
+    use SearchesShopping;
     use SearchesVideos;
     use SearchesWeb;
 
@@ -29,9 +33,10 @@ class Swisscows extends Engine implements HasCountry, HasTimespan
     {
         $path = match ($this->type) {
             SearchType::Web => 'web',
-            SearchType::Images => 'image',
+            SearchType::Images => 'images',
             SearchType::Videos => 'video',
-            default => 'web',
+            SearchType::News => 'news',
+            SearchType::Shopping => 'shopping',
         };
 
         return $this->buildUrl("https://swisscows.com/{$this->appLanguage()}/{$path}", [

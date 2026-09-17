@@ -5,6 +5,7 @@ use Blemli\WebSearch\Engines\Bing;
 use Blemli\WebSearch\Engines\DuckDuckGo;
 use Blemli\WebSearch\Engines\Google;
 use Blemli\WebSearch\Engines\Swisscows;
+use Blemli\WebSearch\Engines\Yandex;
 use Blemli\WebSearch\Enums\Country;
 use Blemli\WebSearch\Enums\OpenIn;
 use Blemli\WebSearch\Events\SearchOpened;
@@ -78,10 +79,10 @@ it('works standalone with a record and dotted field names', function () {
 });
 
 it('falls back to a web search when the engine cannot do the type', function () {
-    $action = WebSearchAction::make()->query(fn (): string => 'x')->engine(Swisscows::class)->shopping();
+    $action = WebSearchAction::make()->query(fn (): string => 'x')->engine(Yandex::class)->shopping();
 
-    expect($action->getUrl())->toBe('https://swisscows.com/en/web?query=x')
-        ->and($action->getLabel())->toBe('Search shopping on Swisscows');
+    expect($action->getUrl())->toBe('https://yandex.com/search/?text=x')
+        ->and($action->getLabel())->toBe('Search shopping on Yandex');
 });
 
 it('opens in the same tab, a popup or a slide-over', function () {

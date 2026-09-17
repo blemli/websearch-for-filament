@@ -6,6 +6,7 @@ use Blemli\WebSearch\Engines\Ecosia;
 use Blemli\WebSearch\Engines\Google;
 use Blemli\WebSearch\Engines\Swisscows;
 use Blemli\WebSearch\Enums\OpenIn;
+use Blemli\WebSearch\Livewire\BreezySearchPreferences;
 use Blemli\WebSearch\Livewire\SearchPreferences;
 use Blemli\WebSearch\Models\Preference;
 use Blemli\WebSearch\Stores\CookieStore;
@@ -92,4 +93,18 @@ it('saves the form through the livewire component', function () {
 
     expect(json_decode(Cookie::queued(CookieStore::NAME)->getValue(), true))
         ->toBe(['engine' => 'duckduckgo', 'open_in' => 'slide_over', 'country' => 'ch']);
+});
+
+it('saves through the breezy profile component, whose name livewire can resolve', function () {
+    bootPanel();
+    loginUser();
+
+    livewire(BreezySearchPreferences::class)
+        ->fillForm(['engine' => 'swisscows', 'open_in' => 'slide_over'])
+        ->call('submit')
+        ->assertHasNoFormErrors()
+        ->assertNotified();
+
+    expect(app('livewire.factory')->resolveComponentClass((new BreezySearchPreferences)->getName()))->toBe(BreezySearchPreferences::class)
+        ->and(json_decode(Cookie::queued(CookieStore::NAME)->getValue(), true))->toBe(['engine' => 'swisscows', 'open_in' => 'slide_over']);
 });

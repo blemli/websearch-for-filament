@@ -106,11 +106,11 @@ it('builds brave, swisscows, startpage, ecosia, qwant, yandex and baidu urls', f
         ->and(query(Brave::web('x')->between('2024-01-01', '2024-02-01')->url())['tf'])->toBe('2024-01-01to2024-02-01');
 
     app()->setLocale('de_CH');
-    expect(Swisscows::images('Kuh')->country()->within(Timespan::Week)->url())->toBe('https://swisscows.com/de/image?query=Kuh&region=de-CH&freshness=Week');
+    expect(Swisscows::images('Kuh')->country()->within(Timespan::Week)->url())->toBe('https://swisscows.com/de/images?query=Kuh&region=de-CH&freshness=Week');
 
     expect(Startpage::videos('x')->within(Timespan::Day)->url())->toBe('https://www.startpage.com/do/search?q=x&cat=video&with_date=d')
         ->and(Ecosia::news('x')->url())->toBe('https://www.ecosia.org/news?q=x')
-        ->and(Qwant::shopping('x')->url())->toBe('https://www.qwant.com/?q=x&t=shopping')
+        ->and(Qwant::news('x')->url())->toBe('https://www.qwant.com/?q=x&t=news')
         ->and(Yandex::images('x')->size(ImageSize::Large)->color(Color::Purple)->layout(Layout::Tall)->url())->toBe('https://yandex.com/images/search?text=x&isize=large&icolor=violet&iorient=vertical')
         ->and(Baidu::images('相机')->url())->toBe('https://image.baidu.com/search/index?tn=baiduimage&word=%E7%9B%B8%E6%9C%BA');
 });
@@ -121,7 +121,7 @@ it('encodes queries safely', function () {
 
 it('knows what each engine supports', function () {
     expect(Google::supportedTypes())->toBe(SearchType::cases())
-        ->and(Swisscows::supports(SearchType::Shopping))->toBeFalse()
+        ->and(Yandex::supports(SearchType::Shopping))->toBeFalse()
         ->and(Swisscows::canBeEmbedded())->toBeTrue()
         ->and(Google::canBeEmbedded())->toBeFalse()
         ->and(DuckDuckGo::key())->toBe('duckduckgo')
@@ -131,7 +131,7 @@ it('knows what each engine supports', function () {
 });
 
 it('refuses unsupported search types', function () {
-    Swisscows::for(SearchType::Shopping, 'x');
+    Yandex::for(SearchType::Shopping, 'x');
 })->throws(InvalidArgumentException::class);
 
 it('applies harmonised options and drops what an engine cannot express', function () {

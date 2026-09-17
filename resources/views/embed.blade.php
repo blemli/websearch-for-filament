@@ -1,7 +1,7 @@
+{{-- Inline sizes: arbitrary Tailwind values are not part of the host's compiled CSS. --}}
 <iframe
     src="{{ $url }}"
     title="{{ __('websearch-for-filament::websearch.embed.title') }}"
-    class="h-[calc(100vh-8rem)] w-full rounded-lg bg-white"
+    style="display: block; width: 100%; height: calc(100vh - 7rem); border: 0; border-radius: 0.5rem; background: #fff;"
     referrerpolicy="no-referrer"
-    sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-popups-to-escape-sandbox"
 ></iframe>
