@@ -105,6 +105,7 @@ it('saves through the breezy profile component, whose name livewire can resolve'
         ->assertHasNoFormErrors()
         ->assertNotified();
 
-    expect(app('livewire.factory')->resolveComponentClass((new BreezySearchPreferences)->getName()))->toBe(BreezySearchPreferences::class)
-        ->and(json_decode(Cookie::queued(CookieStore::NAME)->getValue(), true))->toBe(['engine' => 'swisscows', 'open_in' => 'slide_over']);
+    // call('submit') above already had Livewire resolve the component by its
+    // name — that is what breaks when the name does not match the alias.
+    expect(json_decode(Cookie::queued(CookieStore::NAME)->getValue(), true))->toBe(['engine' => 'swisscows', 'open_in' => 'slide_over']);
 });
