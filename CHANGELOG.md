@@ -2,6 +2,10 @@
 
 All notable changes to `websearch-for-filament` will be documented in this file.
 
+## Unreleased
+
+- Popup: focus the reused `websearch` window on every click, so a second search does not land behind the panel
+
 ## v0.1.1 - 2026-09-17
 
 - Uninstaller: `--drop-tables` and `--remove-composer` flags, safe defaults under `--no-interaction`

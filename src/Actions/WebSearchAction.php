@@ -74,7 +74,9 @@ class WebSearchAction extends Action
         $this->openUrlInNewTab(fn (): bool => $this->getOpenIn() === OpenIn::NewTab);
         $this->extraAttributes(fn (): array => $this->getOpenIn() === OpenIn::Popup
             ? ['onclick' => sprintf(
-                "window.open(this.href, 'websearch', 'popup,width=%d,height=%d'); return false;",
+                // ?.focus(): a second click reuses the named window, which browsers
+                // do not raise on their own — without it the search lands behind.
+                "window.open(this.href, 'websearch', 'popup,width=%d,height=%d')?.focus(); return false;",
                 $this->evaluate($this->popupWidth),
                 $this->evaluate($this->popupHeight),
             )]

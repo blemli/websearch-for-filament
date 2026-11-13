@@ -94,6 +94,8 @@ it('opens in the same tab, a popup or a slide-over', function () {
     expect($same->shouldOpenUrlInNewTab())->toBeFalse()
         ->and($same->getExtraAttributes())->toBe([])
         ->and($popup->getExtraAttributes()['onclick'])->toContain('width=800,height=600')
+        ->and($popup->getExtraAttributes()['onclick'])->toContain("'websearch', 'popup,")
+        ->and($popup->getExtraAttributes()['onclick'])->toContain(')?.focus(); return false;')
         ->and($slide->getUrl())->toBeNull()
         ->and($slide->shouldOpenModal())->toBeTrue()
         ->and($slide->isModalSlideOver())->toBeTrue()
